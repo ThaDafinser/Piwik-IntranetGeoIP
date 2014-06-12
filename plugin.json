@@ -9,6 +9,7 @@
     {"name": "Martin Keckeis", "homepage": "https://github.com/thadafinser"}
   ],
   "require": {
-    "piwik": ">=2.3.0"
+    "piwik": "2.3.0",
+    "php": "5.4.0"
   }
 }
