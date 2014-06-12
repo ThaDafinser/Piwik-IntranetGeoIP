@@ -3,7 +3,7 @@
  * @author https://github.com/ThaDafinser
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
-namespace Piwik\Plugins\IntranetSubNetwork;
+namespace Piwik\Plugins\IntranetGeoIp;
 
 use Piwik\Plugin;
 use Piwik\IP;
