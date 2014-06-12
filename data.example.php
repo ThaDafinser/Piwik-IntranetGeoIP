@@ -4,6 +4,7 @@
  * visitorInfo can be extended to all available fields inside the `log_visit` table of piwik
  */
 return [
+    /*
     [
         'visitorInfo' => [
             //ISO-3166 alpha-2 code http://en.wikipedia.org/wiki/ISO_3166-1
@@ -27,7 +28,7 @@ return [
             '10.59.0.0/19',
             '170.56.251.200/29'
         ]
-    ],
-
+    ]
+    */
     //add more blocks live above
 ];
