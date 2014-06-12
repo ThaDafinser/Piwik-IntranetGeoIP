@@ -11,8 +11,9 @@ After installation and activation of the plugin, open the file `piwik/plugins/In
 You can their add your location information and their subnetworks.
 
 ### Note
-Inside the array key `visitorInfo` you can (in theory...wont make sense) add all available columns from the `log_visit` table you want.
-You also can remove some keys from `visitorInfo` if you don't want to apply it.
+Inside the array key `visitorInfo` you can freely add/remove all available columns from the `log_visit` table you want.
+The keys below are just a suggestion, since they are the only one which make sense currently IMO.
+Inside they key `networks` add all subnetworks which apply to this location.
 
 ```php
 return [
