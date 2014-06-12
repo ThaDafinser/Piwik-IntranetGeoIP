@@ -1,3 +1,4 @@
+<?php
 /**
  * Here you can add your subnetworks and their location based informations
  * 
