@@ -6,9 +6,13 @@ Piwik plugin to locate all locale data of a user based on the IP address/subnetw
 Please use the marketplace of piwik!
 
 ## Configuration
-After installation and activation of the plugin open this file `piwik/plugins/IntranetGeoIp/data.php`
+After installation and activation of the plugin, open the file `piwik/plugins/IntranetGeoIp/data.php`
 
-You can their add your subnetworks of your company and their location information:
+You can their add your location information and their subnetworks.
+
+### Note
+Inside the array key `visitorInfo` you can (in theory...wont make sense) add all available columns from the `log_visit` table you want.
+You also can remove some keys from `visitorInfo` if you don't want to apply it.
 
 ```php
 return [
