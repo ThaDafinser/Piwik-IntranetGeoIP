@@ -3,12 +3,12 @@
  * @author https://github.com/ThaDafinser
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
-namespace Piwik\Plugins\IntranetGeoIp;
+namespace Piwik\Plugins\IntranetGeoIP;
 
 use Piwik\Plugin;
 use Piwik\IP;
 
-class IntranetGeoIp extends Plugin
+class IntranetGeoIP extends Plugin
 {
 
     const DATA_FILE = 'data.php';
