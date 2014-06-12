@@ -1,6 +1,6 @@
 {
-  "name": "IntranetGeoIp",
-  "version": "1.0.6",
+  "name": "IntranetGeoIP",
+  "version": "1.0.7",
   "description": "Piwik plugin to locate all locale data of a user based on the IP address/subnetwork (country, region, city, latitude, longitude, provider, ...)",
   "keywords": ["Subnet", "Intranet", "IPv4", "IPv6", "GeoIP", "ThaDafinser"],
   "license": "GPL v3",
