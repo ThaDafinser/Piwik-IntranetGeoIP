@@ -1,11 +1,16 @@
-# IntranetGeoIp
+# Piwik IntranetGeoIp Plugin
 
+## Description
 Piwik plugin to locate all locale data of a user based on the IP address/subnetwork (country, region, city, latitude, longitude, provider, ...)
 
 ***Please use it only for INTRANET tracking*** everything else just dont make sense :-)
 
-## Installation
-Please use the marketplace of piwik!
+## FAQ
+
+__How to configure the networks?__
+See the file `piwik/plugins/IntranetGeoIp/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
+
+
 
 ## Configuration
 After installation and activation of the plugin, open the file `piwik/plugins/IntranetGeoIp/data.php`
