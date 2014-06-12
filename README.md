@@ -20,6 +20,8 @@ You can their add your location information and their subnetworks.
 ### Note
 Inside the array key `visitorInfo` you can freely add/remove all available columns from the `log_visit` table you want.
 The keys below are just a suggestion, since they are the only one which make sense currently IMO.
+All available fields, see here: http://developer.piwik.org/guides/persistence-and-the-mysql-backend#visits
+
 Inside they key `networks` add all subnetworks which apply to this location.
 
 ```php
