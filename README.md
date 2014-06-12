@@ -2,6 +2,8 @@
 
 Piwik plugin to locate all locale data of a user based on the IP address/subnetwork (country, region, city, latitude, longitude, provider, ...)
 
+***Please use it only for INTRANET tracking*** everything else just dont make sense :-)
+
 ## Installation
 Please use the marketplace of piwik!
 
