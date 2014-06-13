@@ -10,6 +10,10 @@ Piwik plugin to locate all locale data of a user based on the IP address/subnetw
 __How to configure the networks?__
 See the file `piwik/plugins/IntranetGeoIp/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
 
+__Performance optimization__
+Since we are in an intranet enviroment, we disable a lot of plugins...
+Disable the ***Provider (Core)*** plugin, since you dont need it!
+Read here the section about Tracker performance http://piwik.org/docs/optimize-how-to/#configure-your-server-for-speed
 
 
 ## Configuration
