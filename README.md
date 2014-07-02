@@ -16,17 +16,16 @@ If you create a full configuration data file, you'll see
 * and many more...
 
 
-__How to configure the networks?__
+__How to configure/install this plugin / the networks?__
 
-See the file `piwik/plugins/IntranetGeoIp/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
-
-
-## Configuration
 After installation and activation of the plugin, open the file `piwik/plugins/IntranetGeoIp/data.php`
 
 You can their add your location information and their subnetworks.
 
-### Note
+See the file `piwik/plugins/IntranetGeoIp/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
+
+__Note about the configuration?__
+
 Inside the array key `visitorInfo` you can freely add/remove all available columns from the `log_visit` table you want.
 The keys below are just a suggestion, since they are the only one which make sense currently IMO.
 All available fields, see here: http://developer.piwik.org/guides/persistence-and-the-mysql-backend#visits
