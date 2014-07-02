@@ -26,6 +26,7 @@ return [
         ],
         'networks' => [
             //enter here all subnetworks for this location
+            //use a subnetwork calculator, e.g. http://jodies.de/ipcalc
             '10.59.0.0/19',
             '170.56.251.200/29'
         ]
