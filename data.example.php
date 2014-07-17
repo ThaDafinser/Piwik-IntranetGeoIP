@@ -6,6 +6,16 @@
  */
 return [
     /*
+     * If the IP was not matched, apply these data to visitorInfo
+     * You can also apply here all possible visitorInformation data if you want
+     */
+    'noMatch' => [
+        'visitorInfo' => [
+            'location_provider' => 'unknown'
+        ]
+    ],
+    
+    /*
     [
         'visitorInfo' => [
             //ISO-3166 alpha-2 code http://en.wikipedia.org/wiki/ISO_3166-1
