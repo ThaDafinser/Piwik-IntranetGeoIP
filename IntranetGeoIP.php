@@ -63,9 +63,7 @@ class IntranetGeoIP extends Plugin
         }
         
         foreach ($data as $value) {
-            if (isset($value['networks'] && IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) 
-            
-            {
+            if (isset($value['networks']) && IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) {
                 // values with the same key are not overwritten by right!
                 // http://www.php.net/manual/en/language.operators.array.php
                 if (isset($value['visitorInfo'])) {
