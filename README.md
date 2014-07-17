@@ -15,6 +15,12 @@ If you create a full configuration data file, you'll see
 * Visitor -> Location and provider
 * and many more...
 
+__Why there stands provider "unknown" in my visitor log?__
+If your installation is stock, all visitors will get this "flag" to show you, what IPs are not matched.
+You can adjust or remove this, by changing the "noMatch" block in your `data.php` file.
+If you remove the complete block, none matched visitors will be skipped by this plugin.
+But you can also fill all possible visitorInfos like you are used for matched IP addresses.
+
 
 __How to configure/install this plugin / the networks?__
 
@@ -34,6 +40,16 @@ Inside they key `networks` add all subnetworks which apply to this location.
 
 ```php
 return [
+    /*
+     * If the IP was not matched, apply these data to visitorInfo
+     * You can also apply here all possible visitorInformation data if you want
+     */
+    'noMatch' => [
+        'visitorInfo' => [
+            'location_provider' => 'unknown'
+        ]
+    ],
+    
     [
         'visitorInfo' => [
             //ISO-3166 alpha-2 code http://en.wikipedia.org/wiki/ISO_3166-1
