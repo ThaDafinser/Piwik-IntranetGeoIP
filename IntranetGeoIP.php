@@ -63,14 +63,22 @@ class IntranetGeoIP extends Plugin
         }
         
         foreach ($data as $value) {
-            if (IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) {
+            if (isset($value['networks'] && IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) 
+            
+            {
                 // values with the same key are not overwritten by right!
                 // http://www.php.net/manual/en/language.operators.array.php
-                $visitorInfo = $value['visitorInfo'] + $visitorInfo;
+                if (isset($value['visitorInfo'])) {
+                    $visitorInfo = $value['visitorInfo'] + $visitorInfo;
+                }
                 return;
             }
         }
         
-        $visitorInfo['location_provider'] = 'unknown';
+        // if nothing was matched, you can define default values if you want to
+        if (isset($data['noMatch']) && isset($data['noMatch']['visitorInfo'])) {
+            $visitorInfo = $data['noMatch']['visitorInfo'] + $visitorInfo;
+            return;
+        }
     }
 }
