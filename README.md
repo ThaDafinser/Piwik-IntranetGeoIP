@@ -16,6 +16,7 @@ If you create a full configuration data file, you'll see
 * and many more...
 
 __Why there stands provider "unknown" in my visitor log?__
+
 If your installation is stock, all visitors will get this "flag" to show you, what IPs are not matched.
 You can adjust or remove this, by changing the "noMatch" block in your `data.php` file.
 If you remove the complete block, none matched visitors will be skipped by this plugin.
