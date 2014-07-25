@@ -28,7 +28,7 @@ class IntranetGeoIP extends Plugin
      */
     private function getDataFilePath()
     {
-        return PIWIK_INCLUDE_PATH . '/config/data.php';
+        return PIWIK_INCLUDE_PATH . '/config/IntranetGeoIP.data.php';
     }
 
     /**
@@ -44,11 +44,15 @@ class IntranetGeoIP extends Plugin
 
     /**
      *
-     * @see \Piwik\Plugin::install()
+     * @see \Piwik\Plugin::activate()
      */
-    public function install()
+    public function activate()
     {
-        $notification = new Notification('Please copy now the file ' . $this->getDataExampleFilePath() . ' to ' . $this->getDataFilePath() . ' and fill in your data before activate this plugin');
+        if (! file_exists($this->getDataFilePath()) && file_exists($this->getDataExampleFilePath())) {
+            copy($this->getDataExampleFilePath(), $this->getDataFilePath());
+        }
+        
+        $notification = new Notification('Please edit the file ' . $this->getDataFilePath() . ' and fill in your data');
         $notification->raw = true;
         $notification->context = Notification::CONTEXT_INFO;
         Notification\Manager::notify('IntranetGeoIp_DATA_ERROR', $notification);
