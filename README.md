@@ -18,18 +18,18 @@ If you create a full configuration data file, you'll see
 __Why there stands provider "unknown" in my visitor log?__
 
 If your installation is stock, all visitors will get this "flag" to show you, what IPs are not matched.
-You can adjust or remove this, by changing the "noMatch" block in your `data.php` file.
+You can adjust or remove this, by changing the "noMatch" block in your `IntranetGeoIP.data.php` file.
 If you remove the complete block, none matched visitors will be skipped by this plugin.
 But you can also fill all possible visitorInfos like you are used for matched IP addresses.
 
 
 __How to configure/install this plugin / the networks?__
 
-After installation and activation of the plugin, open the file `piwik/config/data.php`
+After installation and activation of the plugin, open the file `piwik/config/IntranetGeoIP.data.php`
 
 You can their add your location information and their subnetworks.
 
-See the file `piwik/config/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
+See the file `piwik/config/IntranetGeoIP.data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
 
 __Note about the configuration?__
 
