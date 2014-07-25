@@ -25,11 +25,11 @@ But you can also fill all possible visitorInfos like you are used for matched IP
 
 __How to configure/install this plugin / the networks?__
 
-After installation and activation of the plugin, open the file `piwik/plugins/IntranetGeoIp/data.php`
+After installation and activation of the plugin, open the file `piwik/config/data.php`
 
 You can their add your location information and their subnetworks.
 
-See the file `piwik/plugins/IntranetGeoIp/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
+See the file `piwik/config/data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
 
 __Note about the configuration?__
 
