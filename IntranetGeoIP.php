@@ -44,9 +44,22 @@ class IntranetGeoIP extends Plugin
 
     /**
      *
+     * @see \Piwik\Plugin::install()
+     */
+    public function install()
+    {
+        return $this->copyDataFile();
+    }
+
+    /**
      * @see \Piwik\Plugin::activate()
      */
     public function activate()
+    {
+        return $this->copyDataFile();
+    }
+
+    private function copyDataFile()
     {
         if (! file_exists($this->getDataFilePath()) && file_exists($this->getDataExampleFilePath())) {
             copy($this->getDataExampleFilePath(), $this->getDataFilePath());
@@ -58,6 +71,17 @@ class IntranetGeoIP extends Plugin
         Notification\Manager::notify('IntranetGeoIp_DATA_ERROR', $notification);
         
         return;
+    }
+
+    /**
+     *
+     * @see \Piwik\Plugin::uninstall()
+     */
+    public function uninstall()
+    {
+        if (file_exists($this->getDataFilePath())) {
+            unlink($this->getDataFilePath());
+        }
     }
 
     /**
