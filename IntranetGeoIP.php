@@ -7,13 +7,29 @@ namespace Piwik\Plugins\IntranetGeoIP;
 
 use Piwik\Plugin;
 use Piwik\IP;
+use Piwik\Log;
+use Piwik\Notification;
 
 class IntranetGeoIP extends Plugin
 {
 
-    const DATA_FILE = 'data.php';
+    /**
+     *
+     * @return string
+     */
+    private function getDataExampleFilePath()
+    {
+        return __DIR__ . '/data.example.php';
+    }
 
-    const DATA_FILE_EXAMPLE = 'data.example.php';
+    /**
+     *
+     * @return string
+     */
+    private function getDataFilePath()
+    {
+        return PIWIK_INCLUDE_PATH . '/config/data.php';
+    }
 
     /**
      *
@@ -26,39 +42,37 @@ class IntranetGeoIP extends Plugin
         );
     }
 
+    /**
+     *
+     * @see \Piwik\Plugin::install()
+     */
     public function install()
     {
-        $this->createDefaultDataFile();
+        $notification = new Notification('Please copy now the file ' . $this->getDataExampleFilePath() . ' to ' . $this->getDataFilePath() . ' and fill in your data before activate this plugin');
+        $notification->raw = true;
+        $notification->context = Notification::CONTEXT_INFO;
+        Notification\Manager::notify('IntranetGeoIp_DATA_ERROR', $notification);
         
         return;
-    }
-
-    public function activate()
-    {
-        $this->createDefaultDataFile();
-        
-        return;
-    }
-
-    private function createDefaultDataFile()
-    {
-        if (! file_exists(__DIR__ . '/' . self::DATA_FILE) && file_exists(__DIR__ . '/' . self::DATA_FILE_EXAMPLE)) {
-            copy(__DIR__ . '/' . self::DATA_FILE_EXAMPLE, __DIR__ . '/' . self::DATA_FILE);
-        }
     }
 
     /**
      * Called by event `Tracker.newVisitorInformation`
      *
      * @see getListHooksRegistered()
-     *
      */
     public function logIntranetSubNetworkInfo(&$visitorInfo)
     {
-        $data = include 'data.php';
+        if (! file_exists($this->getDataFilePath())) {
+            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
+            return;
+        }
+        
+        $data = include $this->getDataFilePath();
         if ($data === false) {
             // no data file found
             // @todo ...inform the user/ log something
+            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
             return;
         }
         
