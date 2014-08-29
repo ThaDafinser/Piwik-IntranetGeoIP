@@ -9,6 +9,7 @@ Piwik plugin to locate all locale data of a user based on the IP address/subnetw
 ## FAQ
 
 __What does this plugin do?__
+
 It adds visitor information based on the IP address, matched from your configuration. Not more and not less.
 The database schema and UI stays untouched, so all Piwik statistics can be used like you would use internet GeoIP database.
 
