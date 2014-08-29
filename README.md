@@ -13,24 +13,6 @@ __What does this plugin do?__
 It adds visitor information based on the matched IP address from your configuration. Not more and not less.
 The database schema and UI stays untouched, so all Piwik statistics can be used like you would use a internet GeoIP database.
 
-__What statistics are available?__
-
-If you create a full configuration data file, you'll see
-* Visitor -> Realtime visitor map
-* Visitor -> Location and provider
-* and many more...(in generall all statistics are available like using a internet GeoIP database)
-
-__Why there stands provider "unknown" in my visitor log?__
-
-If your installation is stock, all visitors will get this "flag" to show you, what IPs are not matched.
-You can adjust or remove this, by changing the "noMatch" block in your `IntranetGeoIP.data.php` file.
-If you remove the complete block, none matched visitors will be skipped by this plugin.
-But you can also fill all possible visitorInfos like you are used for matched IP addresses.
-
-__Can i use this plugin with a internet GeoIP database side by side?__
-
-Yes you can.
-Just remove or comment out the `noMatch` block in your configuration file.
 
 __How to configure/install this plugin / the networks?__
 
@@ -39,6 +21,28 @@ After installation and activation of the plugin, open the file `piwik/config/Int
 You can their add your location information and their subnetworks.
 
 See the file `piwik/config/IntranetGeoIP.data.php` or see the readme on github https://github.com/ThaDafinser/IntranetGeoIp
+
+
+__What statistics are available?__
+
+If you create a full configuration data file, you'll see
+* Visitor -> Realtime visitor map
+* Visitor -> Location and provider
+* and many more...(in generall all statistics are available like using a internet GeoIP database)
+
+
+__Why there stands provider "unknown" in my visitor log?__
+
+If your installation is stock, all visitors will get this "flag" to show you, what IPs are not matched.
+You can adjust or remove this, by changing the "noMatch" block in your `IntranetGeoIP.data.php` file.
+If you remove the complete block, none matched visitors will be skipped by this plugin.
+But you can also fill all possible visitorInfos like you are used for matched IP addresses.
+
+
+__Can i use this plugin with a internet GeoIP database side by side?__
+
+Yes you can.
+Just remove or comment out the `noMatch` block in your configuration file.
 
 __Note about the configuration?__
 
