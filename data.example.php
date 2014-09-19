@@ -1,10 +1,23 @@
 <?php
 /**
+ * @author https://github.com/ThaDafinser
+ */
+/**
  * Here you can add your subnetworks and their location based informations
  * 
  * visitorInfo can be extended to all available fields inside the `log_visit` table of piwik
  */
 return [
+    /*
+     * If the IP was not matched, apply these data to visitorInfo
+     * You can also apply here all possible visitorInformation data if you want
+     */
+    'noMatch' => [
+        'visitorInfo' => [
+            'location_provider' => 'unknown'
+        ]
+    ],
+    
     /*
     [
         'visitorInfo' => [

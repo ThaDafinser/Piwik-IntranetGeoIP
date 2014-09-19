@@ -1,19 +1,34 @@
 <?php
 /**
  * @author https://github.com/ThaDafinser
- * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 namespace Piwik\Plugins\IntranetGeoIP;
 
 use Piwik\Plugin;
 use Piwik\IP;
+use Piwik\Log;
+use Piwik\Notification;
 
 class IntranetGeoIP extends Plugin
 {
 
-    const DATA_FILE = 'data.php';
+    /**
+     *
+     * @return string
+     */
+    private function getDataExampleFilePath()
+    {
+        return __DIR__ . '/data.example.php';
+    }
 
-    const DATA_FILE_EXAMPLE = 'data.example.php';
+    /**
+     *
+     * @return string
+     */
+    private function getDataFilePath()
+    {
+        return PIWIK_INCLUDE_PATH . '/config/IntranetGeoIP.data.php';
+    }
 
     /**
      *
@@ -26,24 +41,46 @@ class IntranetGeoIP extends Plugin
         );
     }
 
+    /**
+     *
+     * @see \Piwik\Plugin::install()
+     */
     public function install()
     {
-        $this->createDefaultDataFile();
-        
-        return;
+        return $this->copyDataFile();
     }
 
+    /**
+     *
+     * @see \Piwik\Plugin::activate()
+     */
     public function activate()
     {
-        $this->createDefaultDataFile();
+        return $this->copyDataFile();
+    }
+
+    private function copyDataFile()
+    {
+        if (! file_exists($this->getDataFilePath()) && file_exists($this->getDataExampleFilePath())) {
+            copy($this->getDataExampleFilePath(), $this->getDataFilePath());
+        }
+        
+        $notification = new Notification('Please edit the file ' . $this->getDataFilePath() . ' and fill in your data');
+        $notification->raw = true;
+        $notification->context = Notification::CONTEXT_INFO;
+        Notification\Manager::notify('IntranetGeoIp_DATA_ERROR', $notification);
         
         return;
     }
 
-    private function createDefaultDataFile()
+    /**
+     *
+     * @see \Piwik\Plugin::uninstall()
+     */
+    public function uninstall()
     {
-        if (! file_exists(__DIR__ . '/' . self::DATA_FILE) && file_exists(__DIR__ . '/' . self::DATA_FILE_EXAMPLE)) {
-            copy(__DIR__ . '/' . self::DATA_FILE_EXAMPLE, __DIR__ . '/' . self::DATA_FILE);
+        if (file_exists($this->getDataFilePath())) {
+            unlink($this->getDataFilePath());
         }
     }
 
@@ -51,26 +88,37 @@ class IntranetGeoIP extends Plugin
      * Called by event `Tracker.newVisitorInformation`
      *
      * @see getListHooksRegistered()
-     *
      */
     public function logIntranetSubNetworkInfo(&$visitorInfo)
     {
-        $data = include 'data.php';
+        if (! file_exists($this->getDataFilePath())) {
+            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
+            return;
+        }
+        
+        $data = include $this->getDataFilePath();
         if ($data === false) {
             // no data file found
             // @todo ...inform the user/ log something
+            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
             return;
         }
         
         foreach ($data as $value) {
-            if (IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) {
+            if (isset($value['networks']) && IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) {
                 // values with the same key are not overwritten by right!
                 // http://www.php.net/manual/en/language.operators.array.php
-                $visitorInfo = $value['visitorInfo'] + $visitorInfo;
+                if (isset($value['visitorInfo'])) {
+                    $visitorInfo = $value['visitorInfo'] + $visitorInfo;
+                }
                 return;
             }
         }
         
-        $visitorInfo['location_provider'] = 'unknown';
+        // if nothing was matched, you can define default values if you want to
+        if (isset($data['noMatch']) && isset($data['noMatch']['visitorInfo'])) {
+            $visitorInfo = $data['noMatch']['visitorInfo'] + $visitorInfo;
+            return;
+        }
     }
 }
