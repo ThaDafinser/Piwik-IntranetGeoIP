@@ -5,7 +5,7 @@
 namespace Piwik\Plugins\IntranetGeoIP;
 
 use Piwik\Plugin;
-use Piwik\IP;
+use Piwik\Network;
 use Piwik\Log;
 use Piwik\Notification;
 
@@ -105,7 +105,9 @@ class IntranetGeoIP extends Plugin
         }
         
         foreach ($data as $value) {
-            if (isset($value['networks']) && IP::isIpInRange($visitorInfo['location_ip'], $value['networks'])) {
+            $ip = Network\IP::fromBinaryIP($visitorInfo['location_ip']);
+            
+            if (isset($value['networks']) && $ip->isInRanges($value['networks']) === true) {
                 // values with the same key are not overwritten by right!
                 // http://www.php.net/manual/en/language.operators.array.php
                 if (isset($value['visitorInfo'])) {
