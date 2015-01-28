@@ -4,7 +4,7 @@
   "description": "Piwik plugin to locate all locale data of a user based on the IP address/subnetwork (country, region, city, latitude, longitude, provider, ...)",
   "keywords": ["Subnet", "Intranet", "IPv4", "IPv6", "GeoIP", "ThaDafinser"],
   "license": "GPL v3",
-  "homepage": "https://github.com/ThaDafinser/IntranetGeoIp",
+  "homepage": "https://github.com/ThaDafinser/Piwik-IntranetGeoIP",
   "authors": [
     {"name": "Martin Keckeis", "homepage": "https://github.com/thadafinser"}
   ],
