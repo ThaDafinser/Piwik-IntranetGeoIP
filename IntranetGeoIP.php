@@ -104,9 +104,9 @@ class IntranetGeoIP extends Plugin
             return;
         }
         
+        $ip = Network\IP::fromBinaryIP($visitorInfo['location_ip']);
+        
         foreach ($data as $value) {
-            $ip = Network\IP::fromBinaryIP($visitorInfo['location_ip']);
-            
             if (isset($value['networks']) && $ip->isInRanges($value['networks']) === true) {
                 // values with the same key are not overwritten by right!
                 // http://www.php.net/manual/en/language.operators.array.php
