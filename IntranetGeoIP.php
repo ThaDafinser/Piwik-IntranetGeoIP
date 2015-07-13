@@ -8,6 +8,8 @@ use Piwik\Plugin;
 use Piwik\Network;
 use Piwik\Log;
 use Piwik\Notification;
+use Piwik\Plugins\PrivacyManager\Config as PrivacyManagerConfig;
+use Piwik\Tracker\Request as TrackerRequest;
 
 class IntranetGeoIP extends Plugin
 {
@@ -89,7 +91,7 @@ class IntranetGeoIP extends Plugin
      *
      * @see getListHooksRegistered()
      */
-    public function logIntranetSubNetworkInfo(&$visitorInfo)
+    public function logIntranetSubNetworkInfo(&$visitorInfo, TrackerRequest $request)
     {
         if (! file_exists($this->getDataFilePath())) {
             Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
@@ -104,7 +106,14 @@ class IntranetGeoIP extends Plugin
             return;
         }
         
-        $ip = Network\IP::fromBinaryIP($visitorInfo['location_ip']);
+        $privacyConfig = new PrivacyManagerConfig();
+        
+        $ipBinary = $request->getIp();
+        if ($privacyConfig->useAnonymizedIpForVisitEnrichment === true) {
+            $ipBinary = $visitorInfo['location_ip'];
+        }
+        
+        $ip = Network\IP::fromBinaryIP($ipBinary);
         
         foreach ($data as $value) {
             if (isset($value['networks']) && $ip->isInRanges($value['networks']) === true) {
