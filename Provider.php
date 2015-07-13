@@ -33,6 +33,7 @@ final class Provder extends LocationProvider
             '</em>',
             '</strong>'
         )) . '<p><em><a href="http://piwik.org/faq/how-to/#faq_163" rel="noreferrer"  target="_blank">' . Piwik::translate('UserCountry_HowToInstallGeoIPDatabases') . '</em></a></p>';
+        
         return array(
             'id' => self::ID,
             'title' => self::TITLE,
@@ -42,26 +43,32 @@ final class Provder extends LocationProvider
     }
 
     /**
-     * Returns whether this location provider is available.
+     * This implementation is available, as soon as the plugin is installed!
      *
-     * This implementation is always available.
-     *
-     * @return bool always true
+     * @return bool
      */
     public function isAvailable()
     {
-        return false;
+        return true;
     }
 
     /**
-     * Returns whether this location provider is working correctly.
+     * Test if the data file is around
      *
-     * This implementation is always working correctly.
-     *
-     * @return bool always true
+     * @return bool
      */
     public function isWorking()
     {
+        if(!file_exists(IntranetGeoIP::getDataFilePath())){
+            return 'Configuration file is missing: ' . IntranetGeoIP::getDataFilePath();
+        }
+        
+        $config = include IntranetGeoIP::getDataFilePath();
+        
+        if(count($config) === 1){
+            return 'Only default configuration given. Please edit the configuration file: ' . IntranetGeoIP::getDataFilePath();
+        }
+
         return true;
     }
 
@@ -96,15 +103,11 @@ final class Provder extends LocationProvider
      */
     public function getLocation($info)
     {
-        $enableLanguageToCountryGuess = Config::getInstance()->Tracker['enable_language_to_country_guess'];
-        
-        if (empty($info['lang'])) {
-            $info['lang'] = Common::getBrowserLanguage();
-        }
-        $country = Common::getCountry($info['lang'], $enableLanguageToCountryGuess, $info['ip']);
-        
+        // @todo this is only for testing!
         $location = array(
-            parent::COUNTRY_CODE_KEY => $country
+            parent::COUNTRY_CODE_KEY => 'at',
+            parent::ISP_KEY => 'github.com',
+            parent::ORG_KEY => 'OpenSource'
         );
         $this->completeLocationResult($location);
         
