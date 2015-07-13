@@ -11,6 +11,10 @@ use Piwik\Notification;
 use Piwik\Plugins\PrivacyManager\Config as PrivacyManagerConfig;
 use Piwik\Tracker\Request as TrackerRequest;
 
+// This is need, that this provider is detected in this plugin 
+// @see https://github.com/piwik/piwik/blob/b95837534c6fc4c9dd63eef2c2e9d8bb343ca23e/plugins/UserCountry/LocationProvider.php#L152
+require_once PIWIK_INCLUDE_PATH . '/plugins/IntranetGeoIP/Provider.php';
+
 class IntranetGeoIP extends Plugin
 {
 
