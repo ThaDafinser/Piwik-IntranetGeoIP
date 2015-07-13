@@ -11,23 +11,23 @@ use Piwik\Notification;
 // @see https://github.com/piwik/piwik/blob/b95837534c6fc4c9dd63eef2c2e9d8bb343ca23e/plugins/UserCountry/LocationProvider.php#L152
 require_once PIWIK_INCLUDE_PATH . '/plugins/IntranetGeoIP/Provider.php';
 
-class IntranetGeoIP extends Plugin
+final class IntranetGeoIP extends Plugin
 {
 
     /**
      *
      * @return string
      */
-    private function getDataExampleFilePath()
+    public static function getDataExampleFilePath()
     {
         return __DIR__ . '/data.example.php';
     }
-
+    
     /**
      *
      * @return string
      */
-    private function getDataFilePath()
+    public static function getDataFilePath()
     {
         return PIWIK_INCLUDE_PATH . '/config/IntranetGeoIP.data.php';
     }
