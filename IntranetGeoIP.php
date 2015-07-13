@@ -5,42 +5,31 @@
 namespace Piwik\Plugins\IntranetGeoIP;
 
 use Piwik\Plugin;
-use Piwik\Network;
-use Piwik\Log;
 use Piwik\Notification;
-use Piwik\Plugins\PrivacyManager\Config as PrivacyManagerConfig;
-use Piwik\Tracker\Request as TrackerRequest;
 
-class IntranetGeoIP extends Plugin
+// This is need, that this provider is detected in this plugin 
+// @see https://github.com/piwik/piwik/blob/b95837534c6fc4c9dd63eef2c2e9d8bb343ca23e/plugins/UserCountry/LocationProvider.php#L152
+require_once PIWIK_INCLUDE_PATH . '/plugins/IntranetGeoIP/Provider.php';
+
+final class IntranetGeoIP extends Plugin
 {
 
     /**
      *
      * @return string
      */
-    private function getDataExampleFilePath()
+    public static function getDataExampleFilePath()
     {
         return __DIR__ . '/data.example.php';
     }
-
+    
     /**
      *
      * @return string
      */
-    private function getDataFilePath()
+    public static function getDataFilePath()
     {
         return PIWIK_INCLUDE_PATH . '/config/IntranetGeoIP.data.php';
-    }
-
-    /**
-     *
-     * @see Piwik\Plugin::getListHooksRegistered
-     */
-    public function getListHooksRegistered()
-    {
-        return array(
-            'Tracker.newVisitorInformation' => 'logIntranetSubNetworkInfo'
-        );
     }
 
     /**
@@ -83,53 +72,6 @@ class IntranetGeoIP extends Plugin
     {
         if (file_exists($this->getDataFilePath())) {
             unlink($this->getDataFilePath());
-        }
-    }
-
-    /**
-     * Called by event `Tracker.newVisitorInformation`
-     *
-     * @see getListHooksRegistered()
-     */
-    public function logIntranetSubNetworkInfo(&$visitorInfo, TrackerRequest $request)
-    {
-        if (! file_exists($this->getDataFilePath())) {
-            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
-            return;
-        }
-        
-        $data = include $this->getDataFilePath();
-        if ($data === false) {
-            // no data file found
-            // @todo ...inform the user/ log something
-            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
-            return;
-        }
-        
-        $privacyConfig = new PrivacyManagerConfig();
-        
-        $ipBinary = $request->getIp();
-        if ($privacyConfig->useAnonymizedIpForVisitEnrichment === true) {
-            $ipBinary = $visitorInfo['location_ip'];
-        }
-        
-        $ip = Network\IP::fromBinaryIP($ipBinary);
-        
-        foreach ($data as $value) {
-            if (isset($value['networks']) && $ip->isInRanges($value['networks']) === true) {
-                // values with the same key are not overwritten by right!
-                // http://www.php.net/manual/en/language.operators.array.php
-                if (isset($value['visitorInfo'])) {
-                    $visitorInfo = $value['visitorInfo'] + $visitorInfo;
-                }
-                return;
-            }
-        }
-        
-        // if nothing was matched, you can define default values if you want to
-        if (isset($data['noMatch']) && isset($data['noMatch']['visitorInfo'])) {
-            $visitorInfo = $data['noMatch']['visitorInfo'] + $visitorInfo;
-            return;
         }
     }
 }
