@@ -106,7 +106,7 @@ class IntranetGeoIP extends Plugin
             return;
         }
         if(!is_array($data)){
-            Log::error('Your data file seems to be not valid. The content is: ' . var_dump($data) . ', File used: ' . $this->getDataFilePath());
+            Log::error('Your data file seems to be not valid. The content is: ' . print_r($data, true) . ', File used: ' . $this->getDataFilePath());
             return;
         }
         
