@@ -105,6 +105,10 @@ class IntranetGeoIP extends Plugin
             Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
             return;
         }
+        if(!is_array($data)){
+            Log::error('Your data file seems to be not valid. The content is: ' . print_r($data, true) . ', File used: ' . $this->getDataFilePath());
+            return;
+        }
         
         $privacyConfig = new PrivacyManagerConfig();
         
