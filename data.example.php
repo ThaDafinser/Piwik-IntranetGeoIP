@@ -14,7 +14,8 @@ return [
      */
     'noMatch' => [
         'visitorInfo' => [
-            'location_provider' => 'unknown'
+            // Provider requires the "Provider" Plugin to be active. (Disabled by default in Version 2.15 and above)
+            //'location_provider' => 'unknown'
         ]
     ],
     
@@ -35,7 +36,8 @@ return [
             'location_longitude' => '9.662304',
 
             //enter your company name or do it based on your domain hierarchy
-            'location_provider' => 'myCompany'
+            // Provider requires the "Provider" Plugin to be active. (Disabled by default in Version 2.15 and above)
+            //'location_provider' => 'myCompany'
         ],
         'networks' => [
             //enter here all subnetworks for this location
