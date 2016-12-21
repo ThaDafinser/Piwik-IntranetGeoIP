@@ -34,9 +34,9 @@ class IntranetGeoIP extends Plugin
 
     /**
      *
-     * @see Piwik\Plugin::getListHooksRegistered
+     * @see Piwik\Plugin::registerEvents
      */
-    public function getListHooksRegistered()
+    public function registerEvents()
     {
         return array(
             'Tracker.newVisitorInformation' => 'logIntranetSubNetworkInfo'
@@ -89,7 +89,7 @@ class IntranetGeoIP extends Plugin
     /**
      * Called by event `Tracker.newVisitorInformation`
      *
-     * @see getListHooksRegistered()
+     * @see registerEvents()
      */
     public function logIntranetSubNetworkInfo(&$visitorInfo, TrackerRequest $request)
     {
@@ -105,7 +105,7 @@ class IntranetGeoIP extends Plugin
             Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
             return;
         }
-        if(!is_array($data)){
+        if (!is_array($data)) {
             Log::error('Your data file seems to be not valid. The content is: ' . print_r($data, true) . ', File used: ' . $this->getDataFilePath());
             return;
         }
