@@ -14,13 +14,19 @@ use Piwik\Tracker\Request as TrackerRequest;
 class IntranetGeoIP extends Plugin
 {
 
+    const DATA_EXAMPLE_FILE_PATH = __DIR__ . '/data.example.php';
+
+    const DATA_FILE_PATH = PIWIK_INCLUDE_PATH . '/config/IntranetGeoIP.data.php';
+
+    private static $result = [];
+
     /**
      *
      * @return string
      */
     private function getDataExampleFilePath()
     {
-        return __DIR__ . '/data.example.php';
+        return self::DATA_EXAMPLE_FILE_PATH;
     }
 
     /**
@@ -29,18 +35,7 @@ class IntranetGeoIP extends Plugin
      */
     private function getDataFilePath()
     {
-        return PIWIK_INCLUDE_PATH . '/config/IntranetGeoIP.data.php';
-    }
-
-    /**
-     *
-     * @see Piwik\Plugin::registerEvents
-     */
-    public function registerEvents()
-    {
-        return array(
-            'Tracker.newVisitorInformation' => 'logIntranetSubNetworkInfo'
-        );
+        return self::DATA_FILE_PATH;
     }
 
     /**
@@ -50,6 +45,17 @@ class IntranetGeoIP extends Plugin
     public function install()
     {
         return $this->copyDataFile();
+    }
+
+    /**
+     *
+     * @see \Piwik\Plugin::uninstall()
+     */
+    public function uninstall()
+    {
+        if (file_exists($this->getDataFilePath())) {
+            unlink($this->getDataFilePath());
+        }
     }
 
     /**
@@ -75,15 +81,56 @@ class IntranetGeoIP extends Plugin
         return;
     }
 
-    /**
-     *
-     * @see \Piwik\Plugin::uninstall()
-     */
-    public function uninstall()
+    public static function getResult(array $userInfo)
     {
-        if (file_exists($this->getDataFilePath())) {
-            unlink($this->getDataFilePath());
+        if (!array_key_exists($userInfo['ip'], self::$result)) {
+            
+            self::$result[$userInfo['ip']] = self::getNewResult($userInfo);
         }
+        
+        return self::$result[$userInfo['ip']];
+    }
+
+    private static function getNewResult(array $userInfo)
+    {
+        if (! file_exists(IntranetGeoIP::DATA_FILE_PATH)) {
+            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . IntranetGeoIP::DATA_FILE_PATH);
+            return [];
+        }
+        
+        $data = include IntranetGeoIP::DATA_FILE_PATH;
+        if ($data === false) {
+            // no data file found
+            // @todo ...inform the user/ log something
+            Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . IntranetGeoIP::DATA_FILE_PATH);
+            return [];
+        }
+        if (! is_array($data)) {
+            Log::error('Your data file seems to be not valid. The content is: ' . print_r($data, true) . ', File used: ' . IntranetGeoIP::DATA_FILE_PATH);
+            return [];
+        }
+        
+        $ip = Network\IP::fromStringIP($userInfo['ip']);
+        
+        foreach ($data as $value) {
+            if (isset($value['networks']) && $ip->isInRanges($value['networks']) === true) {
+                // values with the same key are not overwritten by right!
+                // http://www.php.net/manual/en/language.operators.array.php
+                
+                if (isset($value['visitorInfo'])) {
+                    return $value['visitorInfo'];
+                }
+                
+                return [];
+            }
+        }
+        
+        // if nothing was matched, you can define default values if you want to
+        if (isset($data['noMatch']) && isset($data['noMatch']['visitorInfo'])) {
+            return $data['noMatch']['visitorInfo'];
+        }
+        
+        return [];
     }
 
     /**
@@ -105,7 +152,7 @@ class IntranetGeoIP extends Plugin
             Log::error('Plugin IntranetGeoIP does not work. File is missing: ' . $this->getDataFilePath());
             return;
         }
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             Log::error('Your data file seems to be not valid. The content is: ' . print_r($data, true) . ', File used: ' . $this->getDataFilePath());
             return;
         }

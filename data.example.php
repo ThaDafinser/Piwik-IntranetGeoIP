@@ -15,7 +15,7 @@ return [
     'noMatch' => [
         'visitorInfo' => [
             // Provider requires the "Provider" Plugin to be active. (Disabled by default in Version 2.15 and above)
-            //'location_provider' => 'unknown'
+            //'location_country' => 'at',
         ]
     ],
     
