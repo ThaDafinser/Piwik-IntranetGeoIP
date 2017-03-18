@@ -31,6 +31,6 @@ abstract class AbstractBase extends UserCountryBase
             return $result[$locationKey];
         }
         
-        return;
+        return false;
     }
 }
