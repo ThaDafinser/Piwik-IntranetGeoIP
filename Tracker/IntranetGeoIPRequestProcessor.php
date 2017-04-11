@@ -22,8 +22,7 @@ class IntranetGeoIPRequestProcessor extends RequestProcessor
      */
     public function onNewVisit(VisitProperties $visitProperties, Request $request)
     {
-        $vProperties = $visitProperties->getProperties();
-        $visitorInfo = IntranetGeoIP::getResult(IPUtils::binaryToStringIP($vProperties['location_ip']));
+        $visitorInfo = IntranetGeoIP::getResult(IPUtils::binaryToStringIP($visitProperties->getProperty('location_ip')));
 
         foreach ($visitorInfo as $key => $val) {
             $visitProperties->setProperty($key, $val);

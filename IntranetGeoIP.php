@@ -89,7 +89,7 @@ class IntranetGeoIP extends Plugin
      */
     public static function getResult($visitorIP = null)
     {
-        if (isset($visitorIP)) {
+        if ($visitorIP!='0.0.0.0') {
             return self::getNewResult($visitorIP);
         }
 
@@ -97,7 +97,7 @@ class IntranetGeoIP extends Plugin
     }
 
     /**
-     * @param strin $visitorIP
+     * @param string $visitorIP
      * @return array
      */
     private static function getNewResult($visitorIP)
