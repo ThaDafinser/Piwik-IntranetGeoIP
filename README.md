@@ -16,6 +16,9 @@ The database schema and UI stays untouched, so all Piwik statistics can be used 
 
 __How to configure/install this plugin / the networks?__
 
+Upload the plugin in the .zip format. 
+(You may need to add "enable_plugin_upload = 1" on the your config/config.ini.php file under [General])
+
 After installation and activation of the plugin, open the file `piwik/config/IntranetGeoIP.data.php`
 
 You can their add your location information and their subnetworks.
